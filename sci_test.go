@@ -2,6 +2,7 @@ package scipipe
 
 import (
 	"fmt"
+
 	"github.com/stretchr/testify/assert"
 	//"os"
 	"os"
@@ -233,12 +234,13 @@ func TestStreaming(t *t.T) {
 func TestGlobOutputs(t *t.T) {
 	piperun := NewPipelineRunner()
 
+	basePath := "/tmp/ls.txt"
 	create := NewFromShell("create", "ls -l / > {o:out}")
-	create.SetPathStatic("out", "ls.txt")
+	create.SetPathStatic("out", basePath)
 	piperun.AddProcess(create)
 
-	split := NewFromShell("split", "split -l1 {i:in} ls.txt.split_ # {o:splits}")
-	split.GlobOutputs("splits", "ls.txt.split_*")
+	split := NewFromShell("split", "split -l1 {i:in} "+basePath+".split_ # {o:splits}")
+	split.GlobOutputs("splits", basePath+".split_[a-z]+")
 	piperun.AddProcess(split)
 
 	copyf := NewFromShell("copy", "cp {i:in} {o:out}")
