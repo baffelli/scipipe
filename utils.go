@@ -37,7 +37,7 @@ func CheckErr(err error) {
 // Return the regular expression used to parse the place-holder syntax for in-, out- and
 // parameter ports, that can be used to instantiate a SciProcess.
 func getShellCommandPlaceHolderRegex() *re.Regexp {
-	regex := "{(o|os|i|is|p):([^{}:]+)}"
+	regex := "{(o|os|i|is|p):([^{}:]+)(:r(:([^{}:]))?)?}"
 	r, err := re.Compile(regex)
 	Check(err, "Could not compile regex: "+regex)
 	return r
